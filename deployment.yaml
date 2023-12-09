@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+  labels:
+    app: web-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+        - name: web-app
+          image: bsarahle/web_app
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REDIS_HOST
+              value: redis # Update this with your Redis service name
+            - name: REDIS_PORT
+              value: "6379" # Update this with your Redis port
+
+        - name: redis
+          image: redis:latest
+          ports:
+            - containerPort: 6379
